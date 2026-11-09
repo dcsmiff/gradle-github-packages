@@ -17,7 +17,7 @@ import javax.inject.Inject;
  *     // 1. gpr.user / gpr.key (gradle.properties)
  *     // 2. GH_PACKAGES_READ_USER / GH_PACKAGES_READ_TOKEN (environment), or userEnvVar / tokenEnvVar when set
  *     // 3. GITHUB_ACTOR / GITHUB_TOKEN (environment)
- *     // 4. gh api user --jq .login / gh auth token (locally signed-in GitHub CLI)
+ *     // 4. gh auth token (locally signed-in GitHub CLI)
  * }
  * }</pre>
  */
@@ -65,7 +65,7 @@ public abstract class GithubPackagesExtension {
      *   <li>{@code GH_PACKAGES_READ_USER} environment variable, or the variable named by
      *       {@link #getUserEnvVar()} when set</li>
      *   <li>{@code GITHUB_ACTOR} environment variable</li>
-     *   <li>{@code gh api user --jq .login} from a locally signed-in GitHub CLI</li>
+     *   <li>a locally signed-in GitHub CLI (see {@link #getToken()})</li>
      * </ol>
      */
     public abstract Property<String> getUsername();

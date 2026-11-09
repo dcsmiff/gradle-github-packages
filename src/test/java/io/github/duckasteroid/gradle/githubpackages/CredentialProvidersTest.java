@@ -27,7 +27,7 @@ class CredentialProvidersTest {
         assertTrue(message.contains(CredentialKeys.GRADLE_PROPS_USER), "names the gradle property");
         assertTrue(message.contains(CredentialKeys.ENV_GH_READ_PACKAGES_USER), "names the shared env var");
         assertTrue(message.contains(CredentialKeys.ENV_GH_ACTOR), "names the GitHub Actions env var");
-        assertTrue(message.contains("gh api user"), "names the GitHub CLI command");
+        assertTrue(message.contains(CredentialKeys.GH_CLI_USERNAME), "names the GitHub CLI username");
     }
 
     @Test

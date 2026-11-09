@@ -34,7 +34,7 @@ import org.gradle.api.provider.ProviderFactory;
  *   <li>Environment variables: {@code GH_PACKAGES_READ_USER} / {@code GH_PACKAGES_READ_TOKEN}, or
  *       the variables named by {@code userEnvVar} / {@code tokenEnvVar} when set</li>
  *   <li>Environment variables: {@code GITHUB_ACTOR} / {@code GITHUB_TOKEN}</li>
- *   <li>GitHub CLI: {@code gh api user --jq .login} / {@code gh auth token} - for a developer
+ *   <li>GitHub CLI: {@code gh auth token} - for a developer
  *       already signed in locally, so no token need be stored on disk</li>
  * </ol>
  *

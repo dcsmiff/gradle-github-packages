@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *       environment variables by default, or a differently-named pair of environment variables when
  *       {@code userEnvVar} / {@code tokenEnvVar} is given</li>
  *   <li><strong>Tier 3 (GitHub Actions):</strong> GITHUB_ACTOR / GITHUB_TOKEN environment variables</li>
- *   <li><strong>Tier 4 (GitHub CLI):</strong> {@code gh api user --jq .login} / {@code gh auth token},
+ *   <li><strong>Tier 4 (GitHub CLI):</strong> {@code gh auth token},
  *       so a developer already signed in with {@code gh auth login} needs no token stored on disk.
  *       Deliberately last, so a build on CI never shells out; skipped entirely when the CLI is not
  *       installed or not signed in</li>
@@ -36,7 +36,7 @@ public enum CredentialProviders {
      *     <li>Gradle property: {@code gpr.user}, or {@code gpr.<profile>.user} when a profile is given</li>
      *     <li>Environment variable: {@code GH_PACKAGES_READ_USER}, or a custom name when {@code userEnvVar} is given</li>
      *     <li>Environment variable: {@code GITHUB_ACTOR}</li>
-     *     <li>GitHub CLI: {@code gh api user --jq .login}</li>
+     *     <li>GitHub CLI: a fixed username paired with {@code gh auth token}</li>
      * </ol>
      */
     USER {
@@ -58,7 +58,10 @@ public enum CredentialProviders {
 
         @Override
         Provider<String> gitHubCli(ProviderFactory providers) {
-            return GitHubCli.output(providers, CredentialKeys.GH_CLI_USER_ARGS);
+            // Derived from the token lookup rather than `gh api user`, so this shares that call's
+            // cache entry and costs nothing: maven.pkg.github.com ignores the username anyway.
+            return GitHubCli.output(providers, CredentialKeys.GH_CLI_TOKEN_ARGS)
+                    .map(token -> CredentialKeys.GH_CLI_USERNAME);
         }
 
         @Override
@@ -72,7 +75,7 @@ public enum CredentialProviders {
                     "Gradle property '" + CredentialKeys.GRADLE_PROPS_USER + "' (or 'gpr.<profile>.user')",
                     "environment variable '" + CredentialKeys.ENV_GH_READ_PACKAGES_USER + "' (or the name set via userEnvVar)",
                     "environment variable '" + CredentialKeys.ENV_GH_ACTOR + "'",
-                    "GitHub CLI: gh " + String.join(" ", CredentialKeys.GH_CLI_USER_ARGS));
+                    "GitHub CLI: '" + CredentialKeys.GH_CLI_USERNAME + "', when gh auth token yields a token");
         }
     },
     /**

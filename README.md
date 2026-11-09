@@ -119,9 +119,15 @@ gh auth refresh -s read:packages
 
 For local development, this is the preferred option: a developer who is already signed in to the
 [GitHub CLI](https://cli.github.com) needs **no token stored on disk at all**. The plugin runs
-`gh auth token` for the password and `gh api user --jq .login` for the username, using the
-short-lived OAuth token from the developer's existing session. Nothing to rotate, nothing to leak,
-and access is revoked the moment the GitHub account is disabled.
+`gh auth token` for the password, using the credential from the developer's existing session.
+Nothing to rotate, nothing to leak, and access is revoked the moment the GitHub account is
+disabled or the org revokes the CLI's authorisation.
+
+`maven.pkg.github.com` authenticates on the token alone and ignores the username, so the username
+is a fixed `x-access-token` rather than a network round trip to look up the real login.
+
+The CLI result is cached for 60 seconds. Credentials are resolved once per project, so on a large
+multi-project build this is the difference between one subprocess call and one per project.
 
 This tier is deliberately last, so a CI build never shells out. It is skipped entirely — without
 error — when the CLI is not installed or not signed in, so builds on machines without `gh` behave

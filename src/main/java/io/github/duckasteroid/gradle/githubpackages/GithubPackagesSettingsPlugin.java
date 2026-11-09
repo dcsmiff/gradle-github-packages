@@ -29,7 +29,7 @@ import org.gradle.plugin.management.PluginManagementSpec;
  *   <li>Gradle properties: {@code gpr.user} / {@code gpr.key} (gradle.properties)</li>
  *   <li>Environment variables: {@code GH_PACKAGES_READ_USER} / {@code GH_PACKAGES_READ_TOKEN}</li>
  *   <li>Environment variables: {@code GITHUB_ACTOR} / {@code GITHUB_TOKEN}</li>
- *   <li>GitHub CLI: {@code gh api user --jq .login} / {@code gh auth token} - for a developer
+ *   <li>GitHub CLI: {@code gh auth token} - for a developer
  *       already signed in locally, so no token need be stored on disk</li>
  * </ol>
  *

@@ -38,11 +38,16 @@ public interface CredentialKeys {
     /** Candidate file names for the GitHub CLI executable, in lookup order. */
     List<String> GH_CLI_EXECUTABLES = List.of("gh", "gh.exe");
 
-    /** GitHub CLI arguments that print the signed-in user's login name. */
-    List<String> GH_CLI_USER_ARGS = List.of("api", "user", "--jq", ".login");
-
     /** GitHub CLI arguments that print the signed-in user's access token. */
     List<String> GH_CLI_TOKEN_ARGS = List.of("auth", "token");
+
+    /**
+     * Username paired with a GitHub CLI token. maven.pkg.github.com authenticates on the token
+     * alone and ignores the username, so there is no need to spend a network round trip on
+     * {@code gh api user} to discover the real login. This matches GitHub's own convention for
+     * token-based Basic auth.
+     */
+    String GH_CLI_USERNAME = "x-access-token";
 
     /** Gradle property key for the username of a named credential profile, e.g. {@code gpr.personal.user}. */
     static String gradlePropsUser(String profile) {
