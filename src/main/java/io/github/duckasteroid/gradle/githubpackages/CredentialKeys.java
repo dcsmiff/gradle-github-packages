@@ -1,5 +1,7 @@
 package io.github.duckasteroid.gradle.githubpackages;
 
+import java.util.List;
+
 /**
  * Centralized credential key names used by this plugin.
  *
@@ -8,6 +10,7 @@ package io.github.duckasteroid.gradle.githubpackages;
  *   <li>Gradle properties used from {@code gradle.properties}</li>
  *   <li>GitHub Actions default environment variables</li>
  *   <li>Custom environment variables for read-only package access</li>
+ *   <li>The GitHub CLI, for a developer already signed in locally</li>
  * </ul>
  */
 public interface CredentialKeys {
@@ -28,6 +31,18 @@ public interface CredentialKeys {
 
     /** Custom environment variable for a read-only packages token. */
     String ENV_GH_READ_PACKAGES_TOKEN = "GH_PACKAGES_READ_TOKEN";
+
+    /** Environment variable searched to locate the GitHub CLI executable. */
+    String ENV_PATH = "PATH";
+
+    /** Candidate file names for the GitHub CLI executable, in lookup order. */
+    List<String> GH_CLI_EXECUTABLES = List.of("gh", "gh.exe");
+
+    /** GitHub CLI arguments that print the signed-in user's login name. */
+    List<String> GH_CLI_USER_ARGS = List.of("api", "user", "--jq", ".login");
+
+    /** GitHub CLI arguments that print the signed-in user's access token. */
+    List<String> GH_CLI_TOKEN_ARGS = List.of("auth", "token");
 
     /** Gradle property key for the username of a named credential profile, e.g. {@code gpr.personal.user}. */
     static String gradlePropsUser(String profile) {
